@@ -1,27 +1,11 @@
 # makefile for pgsql library for Lua
 
-# Lua setup
-LUA= /usr/local
-LUAINC= $(LUA)/include/lua51
-LUALIB= $(LUA)/lib/lua51
-
-# these will probably work if Lua has been installed globally
-#LUA= /usr/local/
-#LUAINC= $(LUA)/include
-#LUALIB= $(LUA)/lib
-#LUABIN= $(LUA)/bin
-
-# libpq setup
-LPQ= /usr/local
-LPQINC= $(LPQ)/include
-LPQLIB= $(LPQ)/lib
- 
 # probably no need to change anything below here
 CC= gcc
-CFLAGS= $(INCS) $(WARN) -O2 $G
+CFLAGS= $(INCS) $(WARN) -O2 $G -fPIC
 WARN= -ansi -pedantic -Wall
-INCS= -I$(LUAINC) -I$(LPQINC)
-LIBS= -L$(LUALIB) -L$(LPQLIB) -lpq
+INCS= `pkg-config --cflags lua5.1` -I`pg_config --includedir`
+LIBS= `pkg-config --libs lua5.1` -L`pg_config --libdir` -lpq
 
 MYNAME= pgsql
 MYLIB= lua$(MYNAME)
